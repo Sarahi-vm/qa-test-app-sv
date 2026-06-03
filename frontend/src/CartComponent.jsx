@@ -37,11 +37,15 @@ export function CartComponent() {
             return
         }
 
-        setItems(prevItems =>
-            prevItems.map(item =>
+        setItems(prevItems => {
+            if (valor == 0) {
+                return prevItems.filter(item => item.id !== id)
+            }
+
+            return prevItems.map(item =>
                 item.id === id ? { ...item, quantity: parseInt(valor) } : item
             )
-        );
+        });
     };
 
     const handleClearCart = () => {
