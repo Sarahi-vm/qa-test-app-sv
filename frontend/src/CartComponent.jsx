@@ -16,6 +16,10 @@ export function CartComponent() {
         setItems(prevItems => {
             const existe = prevItems.find(item => item.id === producto.id);
             if (existe) {
+                if (existe.quantity + 1 > producto.stock) {
+                    alert('No hay stock suficiente')
+                    return
+                }
                 return prevItems.map(item =>
                     item.id === producto.id ? { ...item, quantity: item.quantity + 1 } : item
                 );
@@ -25,6 +29,14 @@ export function CartComponent() {
     };
 
     const handleQuantityChange = (id, valor) => {
+
+        const prod = PRODUCTOS_DISPONIBLES.find(item => item.id === id)
+
+        if (valor > prod.stock) {
+            alert("No hay suficiente stock. Máximo: " + prod.stock)
+            return
+        }
+
         setItems(prevItems =>
             prevItems.map(item =>
                 item.id === id ? { ...item, quantity: parseInt(valor) } : item
@@ -56,23 +68,28 @@ export function CartComponent() {
             <div style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', marginBottom: '25px', border: '1px solid #ddd' }}>
                 <h3 style={{ marginTop: 0 }}>1. Catálogo de Productos (Haz clic para añadir)</h3>
                 <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
-                    {PRODUCTOS_DISPONIBLES.map(prod => (
-                        <button
-                            key={prod.id}
-                            onClick={() => handleAddProduct(prod)}
-                            style={{ padding: '10px', cursor: 'pointer', borderRadius: '5px', border: '1px solid #999', backgroundColor: '#fff' }}
-                        >
-                            <strong>{prod.name}</strong> <br />
-                            Precio: ${prod.price} {prod.onSale && <span style={{ color: 'red' }}>(Oferta)</span>} <br />
-                            <small style={{ color: '#777' }}>Stock Máx: {prod.stock}</small>
-                        </button>
-                    ))}
+                    {PRODUCTOS_DISPONIBLES.map(prod => {
+                        const carritoItem = items.find(item => item.id === prod.id);
+
+                        return (
+                            <button
+                                disabled={carritoItem?.quantity >= prod.stock}
+                                key={prod.id}
+                                onClick={() => handleAddProduct(prod)}
+                                style={{ padding: '10px', cursor: 'pointer', borderRadius: '5px', border: '1px solid #999', backgroundColor: '#fff' }}
+                            >
+                                <strong>{prod.name}</strong> <br />
+                                Precio: ${prod.price} {prod.onSale && <span style={{ color: 'red' }}>(Oferta)</span>} <br />
+                                <small style={{ color: '#777' }}>Stock Máx: {prod.stock}</small>
+                            </button>
+                        )
+                    })}
                 </div>
             </div>
 
             <div style={{ padding: '10px', backgroundColor: '#e6f7ff', borderRadius: '5px', marginBottom: '20px' }}>
                 <p style={{ margin: 0, color: '#0050b3' }}>
-                    <strong>Último artículo interactuado:</strong> {items[items.length - 1]?.name}
+                    <strong>Último artículo interactuado:</strong> {items[items?.length - 1]?.name}
                 </p>
             </div>
 
