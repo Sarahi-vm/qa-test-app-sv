@@ -77,6 +77,7 @@ export function CartComponent() {
 
                         return (
                             <button
+                                data-testid="cart-product"
                                 disabled={carritoItem?.quantity >= prod.stock}
                                 key={prod.id}
                                 onClick={() => handleAddProduct(prod)}
