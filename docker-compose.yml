@@ -8,6 +8,13 @@ services:
     volumes:
       - ./backend:/app
       - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore:
+            - node_modules/
 
   frontend:
     build: ./frontend
@@ -18,3 +25,10 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /app
+          ignore:
+            - node_modules/

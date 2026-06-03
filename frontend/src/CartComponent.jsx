@@ -72,7 +72,7 @@ export function CartComponent() {
 
             <div style={{ padding: '10px', backgroundColor: '#e6f7ff', borderRadius: '5px', marginBottom: '20px' }}>
                 <p style={{ margin: 0, color: '#0050b3' }}>
-                    <strong>Último artículo interactuado:</strong> {items[items.length - 1].name}
+                    <strong>Último artículo interactuado:</strong> {items[items.length - 1]?.name}
                 </p>
             </div>
 
