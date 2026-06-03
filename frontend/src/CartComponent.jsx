@@ -139,8 +139,9 @@ export function CartComponent() {
                     style={{ padding: '8px', marginRight: '10px', width: '200px' }}
                 />
                 <button
+                    disabled={items.length === 0}
                     onClick={handleCheckout}
-                    style={{ padding: '8px 16px', backgroundColor: '#52c41a', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                    style={{ opacity: items.length === 0 ? 0.5 : 1, padding: '8px 16px', backgroundColor: '#52c41a', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
                 >
                     Calcular Total
                 </button>
