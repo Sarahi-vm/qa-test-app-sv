@@ -13,17 +13,21 @@ app.post('/api/checkout', (req, res) => {
     let discount = 0;
 
     if (coupon === 'DESCUENTO10') {
-        discount = subtotal * 0.10;
+        const regularSubtotal = items
+            .filter(item => !item.onSale)
+            .reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+        
+        discount = Math.min(regularSubtotal * 0.10, 15.00);
     }
 
     let totalNeto = subtotal - discount;
-    let shipping = totalNeto >= 50 ? 0 : 5;
+    let shipping = totalNeto > 50 ? 0 : 5;
 
     res.json({
-        subtotal: subtotal,
-        discount: discount,
-        shipping: shipping,
-        total: totalNeto + shipping
+        subtotal: Number(subtotal.toFixed(2)),
+        discount: Number(discount.toFixed(2)),
+        shipping: Number(shipping.toFixed(2)),
+        total: Number((totalNeto + shipping).toFixed(2))
     });
 });
 
